@@ -1,0 +1,11 @@
+Idéia "Cabra cega":
+Necessário:
+- Acesso a camera
+- Transformação da Imagem da camera em "VR"
+- Acesso ao Bluetooth
+- Passar a imagem de um celular a outro via bluetooth
+
+Optimização:
+- Menu Principal
+- Botões
+- Design

@@ -1,76 +1,59 @@
-##
+# "Cabra Cega VR"
 
-##
-
-##
-
-##
-
-##
-
-# &quot;Cabra Cega VR&quot;
-
-### Nome provisÛrio pq È feio
-
-###
-
-###
-
-###
-
-###
-
-###
-
-### Projeto de SFI
-
-
-
-
+(Nome provis√≥rio pq √© feio)
+Projeto de FSI
 
 Integrantes:
 
-AndrÈ
+ - Andr√©
+ - Lucas
+ - S√©rgio Kazuo Nomura     USP: 10816781
+ - Vitor
 
-Lucas
+## Hist√≥rico do Projeto
+(Escreva uma breve descri√ß√£o das vers√µes e mudan√ßas ocorridas durante o projeto desde o in√≠cio.)
 
-SÈrgio Kazuo Nomura     USP: 10816781
+## Interface
+### Sistema Visual
+HUD(Head-Up Display)
+ - Tempo 
+ - Menus
+   - Op√ß√µes
+   - Instru√ß√µes
+   - Cr√©ditos
+   - Parear Celular
+   - Iniciar Jogo
+C√¢mera
+ - Vis√£o em primeira pessoa usando a c√¢mera do celular.
+### Sistema de Controle
+Andar tendo no√ß√£o do espa√ßo a ser utilizado.
 
-Vitor
+## Projeto T√©cnico
+### Equipamento-alvo
+Smartphone Android (IOS possivelmente em vers√µes futuras), Vers√µes KitKat(4.4)/Lollipop(5.0) pra cima.
+Smartphone com Bluetooth, acesso c√¢mera que filme em ao menos 480p, acesso a Wi-fi, Tela de ao menos 5 polegadas, girosc√≥pio.
+### Ambiente desenvolvido (Hardware e Software)
+PC Windows 10, 8-16GB ram, Intel Core i5-i7 ou Arch Linux, 2-4GB ram, Intel Core i3-i7.
+### Procedimentos e padr√µes de Desenvolvimento
+O jogo devera ser desenvolvido respeitando seu conceito inicial. Dever√° possuir um menu principal contendo bot√µes para que possa seguir o fluxo do software.
+ - A op√ß√£o de "Instru√ß√µes" ter√° apenas textos que poder√£o ser fixos ou passados para o entendimento do jogo ao jogador.
+ - A op√ß√£o de "Cr√©ditos" ter√° apenas textos fixos contendo o nome e o n√∫mero USP de cada integrante envolvido no projeto, incluindo nome do professor e a mat√©ria FSI.
+ - A op√ß√£o "Parear celular" ter√° texto e bot√£o para que o celular se conecte ao "Wi-fi" ou ao "Bluetooth", estabelecendo conex√£o com outro celular tamb√©m nessas redes. Podendo tamb√©m desparear o celular.
+ - A op√ß√£o "Op√ß√µes" mostrar√° a qualidade da conex√£o do celular com outro, podendo reduzir ou aumentar a qualidade, al√©m de ter um feedback se o celular est√° conectado ou n√£o.
+ - A op√ß√£o "Iniciar Jogo" ir√° verificar se o celular est√° conectado com outro, e em caso negativo, mandar√° o jogador de volta ao menu com um aviso que √© necess√°ria a conex√£o. Em caso positivo, ser√° ativada a c√¢mera para a tela do celular, ser√° mandada a imagem captada para o celular conectado, e essa imagem, ao chegar no celular, receber√° um "tratamento" para que se torne VR, sendo dividida em duas imagens cortadas para cada olho. (Necessita de pesquisa). Confirmando os procedimentos da imagem, ambos estar√£o "cegos" com fundo preto em seus olhos, com uma pequena contagem regressiva de 5 segundos avisando que a imagem ir√° ser liberada. No final da contagem o jogo se inicia, com um timer de 1 minuto(teste) para que a brincadeira se complete. No final o jogo retorna ao menu principal.
+### Motor do Jogo (Engine)
+Descreva qual a engine utilizada para criar o jogo e sua vers√£o.
+### Rede
+Descreva o ambiente de rede em que o jogo est√°, expondo servidores (no caso de Multiplayers e MMOs), se ser√° via internet, apenas intranet ou VPN, entre outros.
+### Linguagem de programa√ß√£o
+O c√≥digo-fonte comentado √© inserido na Script Bible produzido pela equipe de programadores.
 
-| Sum·rio |
-| --- |
-|   |
+## Softwares Secund√°rio
+### Editores (Ex.: Modelagem 2D ou 3D, sons, m√∫sicas)
+Android Studio, vis.
+### Instaladores
+Google Play / apk manual.
+### Atualiza√ß√£o de programas
+Google Play / apk manual.
+### Miscel√¢nea
 
-
-
-| 1- HistÛrico do Projeto |
-| --- |
-|  Escreva uma breve descriÁ„o das versıes e mudanÁas ocorridas durante o projeto desde o inÌcio.  |
-
-
-
-| 2 ñ Interface |
-| --- |
-|   **2.1 ñ Sistema Visual** 6.1.1 ñ HUD(Head-Up Display)- Tempo 6.1.2 ñ Menus- OpÁıes- InstruÁıes- CrÈditos- Parear Celular- Iniciar Jogo 6.1.3 ñ C‚meraVis„o em primeira pessoa usando a c‚mera do celular.   **2.2 ñ Sistema de Controle** Andar tendo noÁ„o do espaÁo a ser utilizado.  |
-
-| 3 ñ Projeto TÈcnico |
-| --- |
-|   **4.1 ñ Equipamento-alvo** Smartphone Android(IOS possivelmente em versıes futuras), Versıes KitKat(4.4)/Lollipop(5.0) pra cima.Smartphone com Bluetooth, acesso c‚mera que filme em ao menos 480p, acesso a Wi-fi, Tela de ao menos 5 polegadas, giroscÛpio.  **4.2 ñ Ambiente desenvolvido** (Hardware e Software)PC Windows 10, 8-16GB ram, Intel Core i5-i7.  **4.3 ñ Procedimentos e padrıes de Desenvolvimento** O jogo devera ser desenvolvido respeitando seu conceito inicial. Dever· possuir um menu principal contendo botıes para que possa seguir o fluxo do software.
-- .A opÁ„o de &quot;InstruÁıes&quot; ter· apenas textos que poder„o ser fixos ou passados para o entendimento do jogo ao jogador.
-- .A opÁ„o de &quot;CrÈditos&quot; ter· apenas textos fixos contendo o nome e o n˙mero USP de cada integrante envolvido no projeto, incluindo nome do professor e a matÈria SFI.
-- .A opÁ„o &quot;Parear celular&quot; ter· texto e bot„o para que o celular se conecte ao &quot;Wi-fi&quot; ou ao &quot;Bluetooth&quot;, estabelecendo conex„o com outro celular tambÈm nessas redes. Podendo tambÈm desparear o celular.
-- .A opÁ„o &quot;OpÁıes&quot; mostrar· a qualidade da conex„o do celular com outro, podendo reduzir ou aumentar a qualidade, alÈm de ter um feedback se o celular est· conectado ou n„o.
-- .A opÁ„o &quot;Iniciar Jogo&quot; ir· verificar se o celular est· conectado com outro, e em caso negativo, mandar· o jogador de volta ao menu com um aviso que È necess·ria a conex„o. Em caso positivo, ser· ativada a c‚mera para a tela do celular, ser· mandada a imagem captada para o celular conectado, e essa imagem, ao chegar no celular, receber· um &quot;tratamento&quot; para que se torne VR, sendo dividida em duas imagens cortadas para cada olho. (Necessita de pesquisa). Confirmando os procedimentos da imagem, ambos estar„o &quot;cegos&quot; com fundo preto em seus olhos, com uma pequena contagem regressiva de 5 segundos avisando que a imagem ir· ser liberada. No final da contagem o jogo se inicia, com um timer de 1 minuto(teste) para que a brincadeira se complete. No final o jogo retorna ao menu principal.
- **4.4 ñ Motor do Jogo (Engine)**Descreva qual a engine utilizada para criar o jogo e sua vers„o.  **4.5 ñ Rede** Descreva o ambiente de rede em que o jogo est·, expondo servidores (no caso de Multiplayers e MMOs), se ser· via internet, apenas intranet ou VPN, entre outros.  **4.6 ñ Linguagem de programaÁ„o** O cÛdigo-fonte comentado È inserido na Script Bible produzido pela equipe de programadores.  |
-
-
-
-| 5 ñ Softwares Secund·rios |
-| --- |
-|   **5.1 ñ Editores** (Ex.: Modelagem 2D ou 3D, sons, m˙sicas) **5.2 ñ Instaladores**** 5.3 ñ AtualizaÁ„o de programas ****5.4 ñ Miscel‚nea**   |
-
-
-
-|   |
-| --- |

@@ -1,72 +1,97 @@
-##
+# "Cabra Cega VR"
 
-##
-
-##
-
-##
-
-##
-
-# &quot;Cabra Cega VR&quot;
-
-### Nome provisório pq é feio
-
-###
-
-###
-
-###
-
-###
-
-###
-
-### Projeto de SFI
-
-
-
-
+(Nome provisorio pq Ã© feio)
+Projeto de FSI
 
 Integrantes:
+ - AndrÃ©
+ - Lucas
+ - SÃ©rgio Kazuo Nomura     USP: 10816781
+ - Vitor
 
-André
+## HistÃ³rico do Projeto
 
-Lucas
+(Escreva uma breve descriÃ§Ã£o das versÃµes e mudanÃ§as ocorridas durante o projeto desde o inÃ­cio.)
 
-Sérgio Kazuo Nomura     USP: 10816781
+## Resumo do Projeto
+### Conceito do Jogo
+O jogo se baseia em 2 (dois) ou mais jogadores que utilizarÃ£o seu smartphone como Ã³culos VR, e atravÃ©s dele, serÃ¡ passada a imagem captada pela sua cÃ¢mera para a visÃ£o do adversÃ¡rio.
+### Conjunto de caracterÃ­sticas
+Jogabilidade fluÃ­da e dinÃ¢mica. Sem modos extras. UtilizaÃ§Ã£o da cÃ¢mera e modo VR.
+### GÃªnero
+AÃ§Ã£o, SimulaÃ§Ã£o.
+### PÃºblico-alvo
+Pessoas de todas as idades.
+### Resumo do Fluxo do Jogo
+Menu Principal => Inicio da simulaÃ§Ã£o.
+### Look and Feel
+VisÃ£o do jogador Ã© o prÃ³prio mundo real atravÃ©s da cÃ¢mera.
+### Escopo do Projeto
+NÃºmero de nÃ­veis:Um.
 
-Vitor
+## Jogabilidade e MecÃ¢nica
+### Jogabilidade
+ - ProgressÃ£o do Jogo
+   Ao iniciar o jogo, o jogador deve se mover pelo local que se encontra buscando chegar ao seu objetivo.
+ - Estrutura das MissÃµes / Desafios
+   O maior desafio do jogador Ã© tentar se locomover utilizando a visÃ£o do oponente, causando uma certa confusÃ£o.
+ - Objetivos
+   Como objetivo temos:
+   - Retirar 3 fitas coladas nas costas do oponente.
+   - Chegar em um local determinado
+   - ?????
+ - Fluxo do Jogo
+Forma natural, divertido.
+### MecÃ¢nicas
+ - FÃ­sica do jogo
+   FÃ­sica realista (mundo real).
+ - Movimentos
+   Andar, correr, pular.
+### Combates
+Os jogadores tentarÃ£o retirar fitas presas nas costas dos adversÃ¡rios.
+### Planilha de Fluxo de Telas
+Menu Principal => Iniciar SimulaÃ§Ã£o(CÃ¢mera) => Encontrar Jogador(Parear celular) => OpÃ§Ãµes (Qualidade da imagem) => CrÃ©ditos => InstruÃ§Ãµes.
+### DescriÃ§Ã£o de Telas
+ - Tela Inicial (Intro)
+   Efeitos de intro de jogo.
+ - Tela Principal do jogo
+   Tela de menu principal com as funÃ§Ãµes do jogo, sÃ£o elas:
+    - Iniciar SimulaÃ§Ã£o
+    - Encontrar Jogador
+    - OpÃ§Ãµes
+    - InstruÃ§Ãµes
+ - Tela OpÃ§Ãµes
+   Tela de opÃ§Ãµes com escolhas de alguns parÃ¢metros do jogo. Como qualidade da imagem e celular pareado.
+ - Encontrar jogador
+   OpÃ§Ã£o necessÃ¡ria para encontrar outro celular e se comunicar.
+ - InstruÃ§Ãµes
+   Tela que contem as instruÃ§Ãµes principais do jogo, tais como:
+    - Encontrar um jogador
+    - Iniciar o jogo
+    - Regras da brincadeira.
 
-| Sumário |
-| --- |
-|   |
+## NÃ­veis
+### NÃ­vel 1
+Resumo
+ - Ativar a cÃ¢mera, receber as instruÃ§Ãµes iniciais e comeÃ§ar a brincadeira.
+ - Material introdutÃ³rio
+   InstruÃ§Ãµes iniciais, com uma contagem regressiva "Liberando" a visÃ£o dos participantes.
+ - Objetivos
+   Andar pelo espaÃ§o tentando chegar em um local determinado ou retirar fitas nas costas do adversÃ¡rio.
+ - FinalizaÃ§Ã£o do material (Ex.: Cortes de cena, check de objetivos, vÃ­deos ou textos)
 
+## Gerenciamento
+### Detalhes do Cronograma
+MarÃ§o -- DefiniÃ§Ã£o do time e do tema. Inicio do desenvolvimento e das pesquisas necessÃ¡rias para a programaÃ§Ã£o, inÃ­cio/entrega de uma versÃ£o alpha.
+Abril -- VersÃ£o alpha pronta atÃ© o dia 12 para ser mostrada juntamente com uma apresentaÃ§Ã£o inicial do tema. Desenvolvimento de uma versÃ£o beta.
+Maio -- InÃ­cio dos testes para uma versÃ£o final, desenvolvimento de uma apresentaÃ§Ã£o em sala do jogo finalizado.
 
+## OrÃ§amento
+ZERO, 0, NULO, NÃƒO EXISTE
 
-| 1- Histórico do Projeto |
-| --- |
-|  //Escreva uma breve descrição das versões e mudanças ocorridas durante o projeto desde o início.   |
+## AnÃ¡lise de Risco
+Dificuldades na passagem do vÃ­deo de um celular ao outro, nÃ£o cumprimento do cronograma, bugs, etc...
 
-| 2 - Resumo do Projeto |
-| --- |
-|  2.1 – Conceito do JogoO jogo se baseia em 2 (dois) ou mais jogadores que utilizarão seu smartphone como óculos VR, e através dele, será passada a imagem captada pela sua câmera para a visão do adversário. 2.2 – Conjunto de característicasJogabilidade fluída e dinâmica. Sem modos extras.Utilização da câmera e modo VR.  **2.3 – Gênero** Ação, Simulação. 2.4 – Público-alvoPessoas de todas as idades. 2.5 – Resumo do Fluxo do JogoMenu Principal &gt; Inicio da simulação.  **2.6 – Look and Feel** Visão do jogador é o próprio mundo real através da câmera. 2.7 – Escopo do Projeto2.7.1 Número de níveis:Um.  |
-|   |
+## Plano de Teste
+Ãšltimo mÃªs do cronograma, testes entre a equipe e amigos.
 
-| 3 – Jogabilidade e Mecânica |
-| --- |
-|  3.1 – Jogabilidade3.1.1 – Progressão do JogoAo iniciar o jogo, o jogador deve se mover pelo local que se encontra buscando chegar ao seu objetivo. 3.1.2 – Estrutura das Missões / DesafiosO maior desafio do jogador é tentar se locomover utilizando a visão do oponente, causando uma certa confusão.  **3.1.3 – Objetivos** Como objetivo temos:-Retirar 3 fitas coladas nas costas do oponente.-Chegar em um local determinado-?????  **3.1.4 – Fluxo do Jogo** Forma natural, divertido.  **3.2 – Mecânicas**** 3.2.1 – Física do jogo**Física realista (mundo real). **3.2.2 – Movimentos **Andar, correr, pular. ** 3.2. – Combates **Os jogadores tentarão retirar fitas presas nas costas dos adversários. ** 3.2.7 – Planilha de Fluxo de Telas**Menu Principal &gt; Iniciar Simulação(Câmera) &gt; Encontrar Jogador(Parear celular) &gt; Opções(Qualidade da imagem) &gt; Créditos &gt; Instruções.**3.2.8 – Descrição de Telas**3.2.8.1 - Tela Inicial (Intro)Efeitos de intro de jogo. 3.2.8.2 - Tela Principal do jogoTela de menu principal com as funções do jogo, são elas:Iniciar SimulaçãoEncontrar JogadorOpçõesInstruções 3.2.8.3 - Tela OpçõesTela de opções com escolhas de alguns parâmetros do jogo. Como qualidade da imagem e celular pareado. 3.2.8.4 – Encontrar jogadorOpção necessária para encontrar outro celular e se comunicar. 3.2.8.5 – InstruçõesTela que contem as instruções principais do jogo, tais como:-Encontrar um jogador-Iniciar o jogo-Regras da brincadeira.  |
-
-| 4 – Níveis |
-| --- |
-|   **5.1 – Nível 1** 5.1.1 – ResumoAtivar a câmera, receber as instruções iniciais e começar a brincadeira. 5.1.2 – Material introdutórioInstruções iniciais, com uma contagem regressiva &quot;Liberando&quot; a visão dos participantes. 5.1.3 – ObjetivosAndar pelo espaço tentando chegar em um local determinado ou retirar fitas nas costas do adversário. 5.1.4 – Finalização do material (Ex.: Cortes de cena, check de objetivos, vídeos ou textos)   |
-
-
-
-|     |
-| --- |
-
-| 7 – Gerenciamento |
-| --- |
-|   **7.1 – Detalhes do Cronograma** Março – Definição do time e do tema. Inicio do desenvolvimento e das pesquisas necessárias para a programação, início/entrega de uma versão alpha.Abril – Versão alpha pronta até o dia 12 para ser mostrada juntamente com uma apresentação inicial do tema. Desenvolvimento de uma versão beta.Maio – Início dos testes para uma versão final, desenvolvimento de uma apresentação em sala do jogo finalizado.  **7.2 – Orçamento**** ZERO, 0, NULO, NÃO EXISTE ****7.3 – Análise de Risco** Dificuldades na passagem do vídeo de um celular ao outro, não cumprimento do cronograma, bugs, etc... **7.4 – Plano de Teste** Último mês do cronograma, testes entre a equipe e amigos.  |
-|   |

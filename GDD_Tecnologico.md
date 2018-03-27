@@ -5,7 +5,7 @@ Projeto de FSI
 
 Integrantes:
 
- - André
+ - André Faleiros Alves Paschoal USP:7557122
  - Lucas
  - Sérgio Kazuo Nomura     USP: 10816781
  - Vitor

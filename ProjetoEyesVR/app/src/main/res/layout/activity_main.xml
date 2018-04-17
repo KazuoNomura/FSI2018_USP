@@ -32,16 +32,6 @@
 
         />
 
-    <Button
-        android:id="@+id/button_wifi"
-        android:layout_width="250dp"
-        android:layout_height="wrap_content"
-        android:onClick="iniciarWifi"
-        android:text="Wi-fi"
-        android:layout_gravity="center_horizontal"
-
-        />
-
     <ListView
         android:id="@+id/peerlist"
         android:layout_width="wrap_content"

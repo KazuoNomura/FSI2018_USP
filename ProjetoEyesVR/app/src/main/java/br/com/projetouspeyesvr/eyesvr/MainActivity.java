@@ -30,15 +30,14 @@ public class MainActivity extends AppCompatActivity {
     public static final int MY_PERMISSIONS_REQUEST_CAMERA = 100;
     public static final String ALLOW_KEY = "ALLOWED";
     public static final String CAMERA_PREF = "camera_pref";
+    private ConnManager cm;
     Button button_camera;
-    Button button_wifi;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         button_camera = (Button) findViewById(R.id.button_camera);
-        button_wifi = (Button) findViewById(R.id.button_wifi);
         button_camera.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v) {
                 openCamera();
@@ -65,12 +64,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }
-        final ConnManager cm = new ConnManager(this, getMainLooper());
-        button_wifi.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View f) {
-                cm.unpause();
-            }
-        });
+        cm = new ConnManager(this, getMainLooper());
     }
 
     public static void saveToPreferences(Context context, String key, Boolean allowed) {
@@ -173,8 +167,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+        cm.pause();
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
+        cm.unpause();
     }
 
     public static void startInstalledAppDetailsActivity(final Activity context) {

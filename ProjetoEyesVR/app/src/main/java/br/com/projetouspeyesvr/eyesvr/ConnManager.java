@@ -33,6 +33,7 @@ public class ConnManager {
 				connect(ps.getItem(pos));
 			}
 		});
+		unpause();
 	}
 
 	private void connect(WifiP2pDevice p) {

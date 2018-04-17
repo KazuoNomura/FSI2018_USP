@@ -1,16 +1,21 @@
 package br.com.projetouspeyesvr.eyesvr;
-import android.net.wifi.p2p.*;
-import android.net.wifi.*;
-import android.net.NetworkInfo;
+import android.app.Activity;
 import android.content.*;
-import android.widget.Toast;
+import android.net.NetworkInfo;
+import android.net.wifi.*;
+import android.net.wifi.p2p.*;
 import android.os.Looper;
-import java.util.List;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.Toast;
+import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.net.InetAddress;
+import java.util.List;
 public class ConnManager {
-	public void setup(Context ctx, Looper l) {
+	ConnManager(Activity ctx, Looper l) {
 		topctx = ctx;
 		ifilter.addAction(WifiP2pManager.WIFI_P2P_STATE_CHANGED_ACTION);
 		ifilter.addAction(WifiP2pManager.WIFI_P2P_PEERS_CHANGED_ACTION);
@@ -18,21 +23,30 @@ public class ConnManager {
 		ifilter.addAction(WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION);
 		mgr = (WifiP2pManager) ctx.getSystemService(Context.WIFI_P2P_SERVICE);
 		chan = mgr.initialize(ctx, l, null);
+
+		ps = new ArrayAdapter<WifiP2pDevice>(ctx, R.id.peerlist, new ArrayList<WifiP2pDevice>());
+		final ListView pl = (ListView) ctx.findViewById(R.id.peerlist);
+		pl.setAdapter(ps);
+		pl.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> av, View v, int pos, long id) {
+				connect(ps.getItem(pos));
+			}
+		});
 	}
 
-	private void connect() {
-		WifiP2pDevice p = ps.get(0);
+	private void connect(WifiP2pDevice p) {
 		WifiP2pConfig c = new WifiP2pConfig();
 		c.deviceAddress = p.deviceAddress;
 		c.wps.setup = WpsInfo.PBC;
 		mgr.connect(chan, c, new WifiP2pManager.ActionListener() {
 			@Override
 			public void onSuccess() {
-				// Connected successfully
+				toast("Connection established successfully");
 			}
 			@Override
 			public void onFailure(int reason) {
-				// do something about it
+				toast("Connection attempt failed");
 			}
 		});
 	}
@@ -51,7 +65,7 @@ public class ConnManager {
 	private Context topctx;
 	private WifiP2pManager.Channel chan;
 	private WifiP2pManager mgr;
-	private List<WifiP2pDevice> ps = new ArrayList<WifiP2pDevice>();
+	private ArrayAdapter<WifiP2pDevice> ps;
 	private final IntentFilter ifilter = new IntentFilter();
 	private final BroadcastReceiver br = new BroadcastReceiver() {
 		@Override
@@ -62,12 +76,10 @@ public class ConnManager {
 					mgr.discoverPeers(chan, new WifiP2pManager.ActionListener() {
 						@Override
 						public void onSuccess() {
-							// Peer discovery has been successfully started
 							toast("Peer discovery has been started");
 						}
 						@Override
 						public void onFailure(int reason) {
-							// do something about it
 							toast("Peer discovery couldn't be started");
 						}
 					});
@@ -83,7 +95,6 @@ public class ConnManager {
 							ps.clear();
 							ps.addAll(l.getDeviceList());
 						}
-						toast("Peer list changed");
 					}
 				});
 			} else if(WifiP2pManager.WIFI_P2P_CONNECTION_CHANGED_ACTION.equals(action)) {
@@ -95,7 +106,9 @@ public class ConnManager {
 							toast("Connection established");
 							InetAddress growner = ci.groupOwnerAddress;
 							if(ci.groupFormed && ci.isGroupOwner) {
+								toast("I am a server");
 							} else if(ci.groupFormed) {
+								toast("I am a client");
 							}
 						}
 					});

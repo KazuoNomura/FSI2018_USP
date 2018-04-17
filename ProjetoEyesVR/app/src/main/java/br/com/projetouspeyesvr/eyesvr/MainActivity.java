@@ -65,11 +65,9 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }
-        final ConnManager cm = new ConnManager();
-        cm.setup(this, getMainLooper());
+        final ConnManager cm = new ConnManager(this, getMainLooper());
         button_wifi.setOnClickListener(new View.OnClickListener(){
             public void onClick(View f) {
-
                 cm.unpause();
             }
         });

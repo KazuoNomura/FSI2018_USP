@@ -25,6 +25,9 @@ import android.widget.Button;
 
 import br.com.projetouspeyesvr.eyesvr.ConnManager;
 
+import java.net.Socket;
+import java.io.IOException;
+
 public class MainActivity extends AppCompatActivity {
 
     public static final int MY_PERMISSIONS_REQUEST_CAMERA = 100;
@@ -64,7 +67,21 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }
-        cm = new ConnManager(this, getMainLooper());
+        cm = new ConnManager(this, getMainLooper(), new ConnManager.SocketListener() {
+            @Override
+            protected void onSocketReady(Socket s) {
+                AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
+	        alertDialog.setTitle("Connection");
+                alertDialog.setMessage("We now connected are.");
+                alertDialog.show();
+            }
+            @Override
+            protected void onSocketFail(IOException e) {
+                AlertDialog a = new AlertDialog.Builder(MainActivity.this).create();
+                a.setTitle("Connection");
+                a.setMessage("We connected are not; something wrong went.\n" + e.getMessage());
+            }
+        });
     }
 
     public static void saveToPreferences(Context context, String key, Boolean allowed) {

@@ -4,18 +4,23 @@ import android.content.*;
 import android.net.NetworkInfo;
 import android.net.wifi.*;
 import android.net.wifi.p2p.*;
+import android.os.AsyncTask;
 import android.os.Looper;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
+import java.io.IOException;
 import java.net.InetAddress;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 public class ConnManager {
-	ConnManager(Activity ctx, Looper l) {
+	ConnManager(Activity ctx, Looper l, SocketListener sl) {
+		sockcb = sl;
 		topctx = ctx;
 		ifilter.addAction(WifiP2pManager.WIFI_P2P_STATE_CHANGED_ACTION);
 		ifilter.addAction(WifiP2pManager.WIFI_P2P_PEERS_CHANGED_ACTION);
@@ -63,6 +68,8 @@ public class ConnManager {
 		Toast.makeText(topctx, s, Toast.LENGTH_LONG).show();
 	}
 
+	private SocketListener sockcb;
+	private ServerSocket ss;
 	private Context topctx;
 	private WifiP2pManager.Channel chan;
 	private WifiP2pManager mgr;
@@ -108,15 +115,74 @@ public class ConnManager {
 							InetAddress growner = ci.groupOwnerAddress;
 							if(ci.groupFormed && ci.isGroupOwner) {
 								toast("I am a server");
+								new AsyncTask<Void, Void, SocketPair>() {
+									@Override
+									protected SocketPair doInBackground(Void... useless__) {
+										try {
+											ServerSocket ss = new ServerSocket(2014);
+											toast("ServerSocket is ready");
+											Socket s = ss.accept();
+											toast("Socket established");
+											return new SocketPair(ss, s);
+										} catch(IOException e) {
+											return new SocketPair(e);
+										}
+									}
+									@Override
+									protected void onPostExecute(SocketPair sp) {
+										if(sp.isError) {
+											sockcb.onSocketFail(sp.e);
+										} else {
+											ss = sp.ss;
+											sockcb.onSocketReady(sp.s);
+										}
+									}
+								}.execute();
 							} else if(ci.groupFormed) {
 								toast("I am a client");
+								ss = null;
+								try {
+									sockcb.onSocketReady(new Socket(growner, 2014));
+								} catch(IOException e) {
+									sockcb.onSocketFail(e);
+								}
 							}
 						}
 					});
+				} else {
+					if(ss != null) {
+						try {
+							ss.close();
+						} catch(Exception e_) {
+							/* can't do much now */
+						}
+						ss = null;
+					}
 				}
 			} else if(WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION.equals(action)) {
 			}
 		}
 	};
+	/* me hates android :'( */
+	public static abstract class SocketListener {
+		protected abstract void onSocketReady(Socket s);
+		protected abstract void onSocketFail(IOException e);
+	}
+	/* me hates java >:C */
+	private class SocketPair {
+		SocketPair(IOException e_) {
+			isError = true;
+			e = e_;
+		}
+		SocketPair(ServerSocket a, Socket b) {
+			isError = false;
+			ss = a;
+			s = b;
+		}
+		public boolean isError;
+		public IOException e;
+		public ServerSocket ss;
+		public Socket s;
+	}
 }
 

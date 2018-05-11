@@ -80,6 +80,7 @@ public class MainActivity extends AppCompatActivity {
                 AlertDialog a = new AlertDialog.Builder(MainActivity.this).create();
                 a.setTitle("Connection");
                 a.setMessage("We connected are not; something wrong went.\n" + e.getMessage());
+                a.show();
             }
         });
     }

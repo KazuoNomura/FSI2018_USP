@@ -10,7 +10,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
+import android.app.AlertDialog;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
@@ -38,6 +38,7 @@ public class ConnManager {
 				connect(ps.getItem(pos));
 			}
 		});
+		toast("Started");
 		unpause();
 	}
 
@@ -65,7 +66,10 @@ public class ConnManager {
 	}
 
 	private void toast(String s) {
-		Toast.makeText(topctx, s, Toast.LENGTH_LONG).show();
+		AlertDialog ad = new AlertDialog.Builder(topctx).create();
+		ad.setTitle(s);
+		ad.setMessage(s);
+		ad.show();
 	}
 
 	private SocketListener sockcb;
@@ -103,11 +107,13 @@ public class ConnManager {
 							ps.clear();
 							ps.addAll(l.getDeviceList());
 						}
+						toast("Peer list retrieved");
 					}
 				});
 			} else if(WifiP2pManager.WIFI_P2P_CONNECTION_CHANGED_ACTION.equals(action)) {
 				NetworkInfo ni = (NetworkInfo) i.getParcelableExtra(WifiP2pManager.EXTRA_NETWORK_INFO);
 				if(ni.isConnected()) {
+					toast("Connection attempt will begin");
 					mgr.requestConnectionInfo(chan, new WifiP2pManager.ConnectionInfoListener() {
 						@Override
 						public void onConnectionInfoAvailable(final WifiP2pInfo ci) {

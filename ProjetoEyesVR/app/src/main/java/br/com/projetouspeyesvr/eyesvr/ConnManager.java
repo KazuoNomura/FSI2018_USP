@@ -102,12 +102,14 @@ public class ConnManager {
 				mgr.requestPeers(chan, new WifiP2pManager.PeerListListener() {
 					@Override
 					public void onPeersAvailable(WifiP2pDeviceList l) {
-						Collection<WifiP2pDevice> npl = l.getDeviceList();
-						if(!npl.equals(ps)) {
+						try {
+							Collection<WifiP2pDevice> npl = l.getDeviceList();
 							ps.clear();
-							ps.addAll(l.getDeviceList());
+							ps.addAll(npl);
+							toast("Peer list retrieved");
+						} catch(Exception e) {
+							toast("PERR LIST ERROR " + e.getMessage());
 						}
-						toast("Peer list retrieved");
 					}
 				});
 			} else if(WifiP2pManager.WIFI_P2P_CONNECTION_CHANGED_ACTION.equals(action)) {

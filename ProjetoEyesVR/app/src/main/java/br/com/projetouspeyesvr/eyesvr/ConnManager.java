@@ -99,6 +99,7 @@ public class ConnManager {
 					toast("Wifi P2P is disabled");
 				}
 			} else if(WifiP2pManager.WIFI_P2P_PEERS_CHANGED_ACTION.equals(action)) {
+				toast("Going to request peer list now");
 				mgr.requestPeers(chan, new WifiP2pManager.PeerListListener() {
 					@Override
 					public void onPeersAvailable(WifiP2pDeviceList l) {

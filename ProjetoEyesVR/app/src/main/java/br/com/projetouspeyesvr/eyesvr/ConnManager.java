@@ -100,19 +100,23 @@ public class ConnManager {
 				}
 			} else if(WifiP2pManager.WIFI_P2P_PEERS_CHANGED_ACTION.equals(action)) {
 				toast("Going to request peer list now");
-				mgr.requestPeers(chan, new WifiP2pManager.PeerListListener() {
-					@Override
-					public void onPeersAvailable(WifiP2pDeviceList l) {
-						try {
-							Collection<WifiP2pDevice> npl = l.getDeviceList();
-							ps.clear();
-							ps.addAll(npl);
-							toast("Peer list retrieved");
-						} catch(Exception e) {
-							toast("PERR LIST ERROR " + e.getMessage());
+				try {
+					mgr.requestPeers(chan, new WifiP2pManager.PeerListListener() {
+						@Override
+						public void onPeersAvailable(WifiP2pDeviceList l) {
+							try {
+								Collection<WifiP2pDevice> npl = l.getDeviceList();
+								ps.clear();
+								ps.addAll(npl);
+								toast("Peer list retrieved");
+							} catch(Exception e) {
+								toast("PERR LIST ERROR " + e.getMessage());
+							}
 						}
-					}
-				});
+					});
+				} catch(Exception e) {
+					toast("COULDN't request perr list: " + e.getMessage());
+				}
 			} else if(WifiP2pManager.WIFI_P2P_CONNECTION_CHANGED_ACTION.equals(action)) {
 				NetworkInfo ni = (NetworkInfo) i.getParcelableExtra(WifiP2pManager.EXTRA_NETWORK_INFO);
 				if(ni.isConnected()) {

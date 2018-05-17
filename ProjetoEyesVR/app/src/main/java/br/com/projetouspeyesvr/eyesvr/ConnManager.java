@@ -29,7 +29,7 @@ public class ConnManager {
 		mgr = (WifiP2pManager) ctx.getSystemService(Context.WIFI_P2P_SERVICE);
 		chan = mgr.initialize(ctx, l, null);
 
-		ps = new ArrayAdapter<WifiP2pDevice>(ctx, R.id.peerlist, new ArrayList<WifiP2pDevice>());
+		ps = new ArrayAdapter<WifiP2pDevice>(ctx, R.layout.list_element, new ArrayList<WifiP2pDevice>());
 		final ListView pl = (ListView) ctx.findViewById(R.id.peerlist);
 		pl.setAdapter(ps);
 		pl.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -38,6 +38,7 @@ public class ConnManager {
 				connect(ps.getItem(pos));
 			}
 		});
+
 		toast("Started");
 		unpause();
 	}

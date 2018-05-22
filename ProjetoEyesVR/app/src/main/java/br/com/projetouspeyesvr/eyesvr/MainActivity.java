@@ -70,6 +70,7 @@ public class MainActivity extends AppCompatActivity {
         cm = new ConnManager(this, getMainLooper(), new ConnManager.SocketListener() {
             @Override
             protected void onSocketReady(Socket s) {
+                // connection is ok, s is our channel
                 AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
 	        alertDialog.setTitle("Connection");
                 alertDialog.setMessage("We now connected are.");
@@ -77,6 +78,7 @@ public class MainActivity extends AppCompatActivity {
             }
             @Override
             protected void onSocketFail(IOException e) {
+                // something went wrong
                 AlertDialog a = new AlertDialog.Builder(MainActivity.this).create();
                 a.setTitle("Connection");
                 a.setMessage("We connected are not; something wrong went.\n" + e.getMessage());

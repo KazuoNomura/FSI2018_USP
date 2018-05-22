@@ -20,8 +20,8 @@ import java.util.Collection;
 import java.util.List;
 public class ConnManager {
 	ConnManager(Activity ctx, Looper l, SocketListener sl) {
-		sockcb = sl;
-		topctx = ctx;
+		sockcb = sl; // callback; see below
+		topctx = ctx; // need this for several things
 		ifilter.addAction(WifiP2pManager.WIFI_P2P_STATE_CHANGED_ACTION);
 		ifilter.addAction(WifiP2pManager.WIFI_P2P_PEERS_CHANGED_ACTION);
 		ifilter.addAction(WifiP2pManager.WIFI_P2P_CONNECTION_CHANGED_ACTION);
@@ -29,12 +29,14 @@ public class ConnManager {
 		mgr = (WifiP2pManager) ctx.getSystemService(Context.WIFI_P2P_SERVICE);
 		chan = mgr.initialize(ctx, l, null);
 
+		// build potential connectees list
 		ps = new ArrayAdapter<WifiP2pDevice>(ctx, R.layout.list_element, new ArrayList<WifiP2pDevice>());
 		final ListView pl = (ListView) ctx.findViewById(R.id.peerlist);
 		pl.setAdapter(ps);
 		pl.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> av, View v, int pos, long id) {
+				// when the user chooses a peer, connect to it
 				connect(ps.getItem(pos));
 			}
 		});
@@ -50,6 +52,7 @@ public class ConnManager {
 		mgr.connect(chan, c, new WifiP2pManager.ActionListener() {
 			@Override
 			public void onSuccess() {
+				// the connection state will be changed and that will be noticed by the BroadcastReceiver below
 				toast("Connection established successfully");
 			}
 			@Override
@@ -60,13 +63,16 @@ public class ConnManager {
 	}
 
 	public void pause() {
+		// must be called by onPause()
 		topctx.unregisterReceiver(br);
 	}
 	public void unpause() {
+		// must be called by onResume()
 		topctx.registerReceiver(br, ifilter);
 	}
 
 	private void toast(String s) {
+		// for debugging
 		AlertDialog ad = new AlertDialog.Builder(topctx).create();
 		ad.setTitle(s);
 		ad.setMessage(s);
@@ -86,6 +92,7 @@ public class ConnManager {
 			String action = i.getAction();
 			if(WifiP2pManager.WIFI_P2P_STATE_CHANGED_ACTION.equals(action)) {
 				if(i.getIntExtra(WifiP2pManager.EXTRA_WIFI_STATE, -1) == WifiP2pManager.WIFI_P2P_STATE_ENABLED) {
+					// if p2p has been enabled, find peers
 					mgr.discoverPeers(chan, new WifiP2pManager.ActionListener() {
 						@Override
 						public void onSuccess() {
@@ -100,11 +107,14 @@ public class ConnManager {
 					toast("Wifi P2P is disabled");
 				}
 			} else if(WifiP2pManager.WIFI_P2P_PEERS_CHANGED_ACTION.equals(action)) {
+				// when peers have been found, ask for the list
 				toast("Going to request peer list now");
 				try {
 					mgr.requestPeers(chan, new WifiP2pManager.PeerListListener() {
 						@Override
 						public void onPeersAvailable(WifiP2pDeviceList l) {
+							// when the list arrives, set ps to it so the user can choose
+							// (the view should update automagically)
 							try {
 								Collection<WifiP2pDevice> npl = l.getDeviceList();
 								ps.clear();
@@ -121,22 +131,28 @@ public class ConnManager {
 			} else if(WifiP2pManager.WIFI_P2P_CONNECTION_CHANGED_ACTION.equals(action)) {
 				NetworkInfo ni = (NetworkInfo) i.getParcelableExtra(WifiP2pManager.EXTRA_NETWORK_INFO);
 				if(ni.isConnected()) {
+					// got a connection! now we need a socket
 					toast("Connection attempt will begin");
 					mgr.requestConnectionInfo(chan, new WifiP2pManager.ConnectionInfoListener() {
 						@Override
 						public void onConnectionInfoAvailable(final WifiP2pInfo ci) {
+							// so many callbacks...
 							toast("Connection established");
 							InetAddress growner = ci.groupOwnerAddress;
 							if(ci.groupFormed && ci.isGroupOwner) {
+								// I am a server
 								toast("I am a server");
 								new AsyncTask<Void, Void, SocketPair>() {
 									@Override
 									protected SocketPair doInBackground(Void... useless__) {
+										// should be done in the background because it blocks
 										try {
+											// 2014 is the port, named after ACH2014
 											ServerSocket ss = new ServerSocket(2014);
 											toast("ServerSocket is ready");
 											Socket s = ss.accept();
 											toast("Socket established");
+											// shouldn't call the callback here, do it in main thread
 											return new SocketPair(ss, s);
 										} catch(IOException e) {
 											return new SocketPair(e);
@@ -144,6 +160,7 @@ public class ConnManager {
 									}
 									@Override
 									protected void onPostExecute(SocketPair sp) {
+										// executed on main thread, can now call callback
 										if(sp.isError) {
 											sockcb.onSocketFail(sp.e);
 										} else {
@@ -156,6 +173,7 @@ public class ConnManager {
 								toast("I am a client");
 								ss = null;
 								try {
+									// just connect and call the callback in a single step
 									sockcb.onSocketReady(new Socket(growner, 2014));
 								} catch(IOException e) {
 									sockcb.onSocketFail(e);
@@ -164,6 +182,7 @@ public class ConnManager {
 						}
 					});
 				} else {
+					// disconnected
 					if(ss != null) {
 						try {
 							ss.close();
@@ -174,15 +193,19 @@ public class ConnManager {
 					}
 				}
 			} else if(WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION.equals(action)) {
+				// what do I do here?
+				// is it important?
 			}
 		}
 	};
 	/* me hates android :'( */
+	// callback class, called when done
 	public static abstract class SocketListener {
 		protected abstract void onSocketReady(Socket s);
 		protected abstract void onSocketFail(IOException e);
 	}
 	/* me hates java >:C */
+	// simple container class for an error or a socket
 	private class SocketPair {
 		SocketPair(IOException e_) {
 			isError = true;

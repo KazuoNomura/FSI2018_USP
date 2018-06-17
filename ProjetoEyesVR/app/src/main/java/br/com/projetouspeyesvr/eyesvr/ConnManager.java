@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 public class ConnManager {
+	private final ListView pl;
 	ConnManager(Activity ctx, Looper l, SocketListener sl) {
 		sockcb = sl; // callback; see below
 		topctx = ctx; // need this for several things
@@ -31,7 +32,7 @@ public class ConnManager {
 
 		// build potential connectees list
 		ps = new ArrayAdapter<WifiP2pDevice>(ctx, R.layout.list_element, new ArrayList<WifiP2pDevice>());
-		final ListView pl = (ListView) ctx.findViewById(R.id.peerlist);
+		pl = (ListView) ctx.findViewById(R.id.peerlist);
 		pl.setAdapter(ps);
 		pl.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			@Override
@@ -96,19 +97,19 @@ public class ConnManager {
 					mgr.discoverPeers(chan, new WifiP2pManager.ActionListener() {
 						@Override
 						public void onSuccess() {
-							toast("Peer discovery has been started");
+							//toast("Peer discovery has been started");
 						}
 						@Override
 						public void onFailure(int reason) {
-							toast("Peer discovery couldn't be started");
+							//toast("Peer discovery couldn't be started");
 						}
 					});
 				} else {
-					toast("Wifi P2P is disabled");
+					//toast("Wifi P2P is disabled");
 				}
 			} else if(WifiP2pManager.WIFI_P2P_PEERS_CHANGED_ACTION.equals(action)) {
 				// when peers have been found, ask for the list
-				toast("Going to request peer list now");
+				//toast("Going to request peer list now");
 				try {
 					mgr.requestPeers(chan, new WifiP2pManager.PeerListListener() {
 						@Override
@@ -119,20 +120,20 @@ public class ConnManager {
 								Collection<WifiP2pDevice> npl = l.getDeviceList();
 								ps.clear();
 								ps.addAll(npl);
-								toast("Peer list retrieved");
+								//toast("Peer list retrieved");
 							} catch(Exception e) {
-								toast("PERR LIST ERROR " + e.getMessage());
+								//toast("PERR LIST ERROR " + e.getMessage());
 							}
 						}
 					});
 				} catch(Exception e) {
-					toast("COULDN't request perr list: " + e.getMessage());
+					//toast("COULDN't request perr list: " + e.getMessage());
 				}
 			} else if(WifiP2pManager.WIFI_P2P_CONNECTION_CHANGED_ACTION.equals(action)) {
 				NetworkInfo ni = (NetworkInfo) i.getParcelableExtra(WifiP2pManager.EXTRA_NETWORK_INFO);
 				if(ni.isConnected()) {
 					// got a connection! now we need a socket
-					toast("Connection attempt will begin");
+					//toast("Connection attempt will begin");
 					mgr.requestConnectionInfo(chan, new WifiP2pManager.ConnectionInfoListener() {
 						@Override
 						public void onConnectionInfoAvailable(final WifiP2pInfo ci) {
@@ -153,8 +154,10 @@ public class ConnManager {
 											Socket s = ss.accept();
 											toast("Socket established");
 											// shouldn't call the callback here, do it in main thread
+											pl.setVisibility(View.INVISIBLE);
 											return new SocketPair(ss, s);
 										} catch(IOException e) {
+											toast("Socket not established");
 											return new SocketPair(e);
 										}
 									}
@@ -182,6 +185,7 @@ public class ConnManager {
 						}
 					});
 				} else {
+					toast("Dead");
 					// disconnected
 					if(ss != null) {
 						try {

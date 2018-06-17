@@ -37,10 +37,11 @@ public class MainActivity extends AppCompatActivity {
     public static final String CAMERA_PREF = "camera_pref";
 
     private ConnManager cm;
-    Button button_camera;
-    Camera camera;
-    ShowCamera showCamera;
-    FrameLayout preview;
+    private Button button_camera;
+    private Camera camera;
+    private ShowCamera showCamera;
+    private FrameLayout preview;
+    private Socket connection;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,34 +63,20 @@ public class MainActivity extends AppCompatActivity {
                         Manifest.permission.CAMERA)) {
                     showAlert();
                 } else {
-                    // No explanation needed, we can request the permission.
                     ActivityCompat.requestPermissions(this,
                             new String[]{Manifest.permission.CAMERA},
                             MY_PERMISSIONS_REQUEST_CAMERA);
                 }
             }
-        } else {
-            camera = getCameraInstance();
         }
-        if(camera != null) {
-            showCamera = new ShowCamera(this, camera);
-            preview = (FrameLayout) findViewById(R.id.camera_preview);
-            preview.addView(showCamera);
-        }
-        /*button_camera = (Button) findViewById(R.id.button_camera);
-        button_camera.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View v) {
 
-                openCamera();
-            }
-        });*/
-
-        /*cm = new ConnManager(this, getMainLooper(), new ConnManager.SocketListener() {
+        cm = new ConnManager(this, getMainLooper(), new ConnManager.SocketListener() {
             @Override
             protected void onSocketReady(Socket s) {
                 // connection is ok, s is our channel
+                connection = s;
                 AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
-	        alertDialog.setTitle("Connection");
+                alertDialog.setTitle("Connection");
                 alertDialog.setMessage("We now connected are.");
                 alertDialog.show();
             }
@@ -101,8 +88,18 @@ public class MainActivity extends AppCompatActivity {
                 a.setMessage("We connected are not; something wrong went.\n" + e.getMessage());
                 a.show();
             }
-        });*/
+        });
 
+        button_camera = (Button) findViewById(R.id.button_camera);
+        button_camera.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v) {
+                if(connection != null) {
+                    camera = getCameraInstance();
+                    criarPreview();
+                    button_camera.setVisibility(View.GONE);
+                }
+            }
+        });
     }
     public static Boolean getFromPref(Context context, String key) {
         SharedPreferences myPrefs = context.getSharedPreferences(CAMERA_PREF,
@@ -119,7 +116,6 @@ public class MainActivity extends AppCompatActivity {
 
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
-                        //finish();
                     }
                 });
         alertDialog.show();
@@ -141,20 +137,11 @@ public class MainActivity extends AppCompatActivity {
                         if (showRationale) {
                             showAlert();
                         } else if (!showRationale) {
-                            // user denied flagging NEVER ASK AGAIN
-                            // you can either enable some fall back,
-                            // disable features of your app
-                            // or open another dialog explaining
-                            // again the permission and directing to
-                            // the app setting
                             saveToPreferences(MainActivity.this, ALLOW_KEY, true);
                         }
                     }
                 }
             }
-
-            // other 'case' lines to check for other
-            // permissions this app might request
         }
     }
     public static void saveToPreferences(Context context, String key, Boolean allowed) {
@@ -194,13 +181,13 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        //cm.pause();
+        cm.pause();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        //cm.unpause();
+        cm.unpause();
     }
 
     protected Camera getCameraInstance() {
@@ -218,6 +205,14 @@ public class MainActivity extends AppCompatActivity {
         if (camera != null) {
             camera.release();
             camera = null;
+        }
+    }
+
+    private void criarPreview(){
+        if(camera != null) {
+            showCamera = new ShowCamera(this, camera);
+            preview = (FrameLayout) findViewById(R.id.camera_preview);
+            preview.addView(showCamera);
         }
     }
 }

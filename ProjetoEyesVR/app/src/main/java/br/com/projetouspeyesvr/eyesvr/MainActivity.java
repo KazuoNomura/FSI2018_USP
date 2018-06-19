@@ -74,7 +74,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             protected void onSocketReady(Socket s) {
                 // connection is ok, s is our channel
-                connection = s;
+                camera = getCameraInstance();
+                criarPreview();
+                button_camera.setVisibility(View.GONE);
                 AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
                 alertDialog.setTitle("Connection");
                 alertDialog.setMessage("We now connected are.");
@@ -87,17 +89,6 @@ public class MainActivity extends AppCompatActivity {
                 a.setTitle("Connection");
                 a.setMessage("We connected are not; something wrong went.\n" + e.getMessage());
                 a.show();
-            }
-        });
-
-        button_camera = (Button) findViewById(R.id.button_camera);
-        button_camera.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View v) {
-                if(connection != null) {
-                    camera = getCameraInstance();
-                    criarPreview();
-                    button_camera.setVisibility(View.GONE);
-                }
             }
         });
     }

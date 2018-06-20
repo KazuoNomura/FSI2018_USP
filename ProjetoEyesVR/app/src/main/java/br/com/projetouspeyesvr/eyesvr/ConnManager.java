@@ -1,16 +1,21 @@
 package br.com.projetouspeyesvr.eyesvr;
 import android.app.Activity;
+import android.app.Application;
 import android.content.*;
 import android.net.NetworkInfo;
 import android.net.wifi.*;
 import android.net.wifi.p2p.*;
 import android.os.AsyncTask;
 import android.os.Looper;
+import android.os.NetworkOnMainThreadException;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.app.AlertDialog;
+import android.widget.Toast;
+
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
@@ -20,6 +25,14 @@ import java.util.Collection;
 import java.util.List;
 public class ConnManager {
 	private final ListView pl;
+	private SocketListener sockcb;
+	private ServerSocket ss;
+	private Context topctx;
+	private WifiP2pManager.Channel chan;
+	private WifiP2pManager mgr;
+	private ArrayAdapter<WifiP2pDevice> ps;
+	private final IntentFilter ifilter = new IntentFilter();
+
 	ConnManager(Activity ctx, Looper l, SocketListener sl) {
 		sockcb = sl; // callback; see below
 		topctx = ctx; // need this for several things
@@ -41,7 +54,6 @@ public class ConnManager {
 				connect(ps.getItem(pos));
 			}
 		});
-
 		toast("Started");
 		unpause();
 	}
@@ -80,13 +92,6 @@ public class ConnManager {
 		ad.show();
 	}
 
-	private SocketListener sockcb;
-	private ServerSocket ss;
-	private Context topctx;
-	private WifiP2pManager.Channel chan;
-	private WifiP2pManager mgr;
-	private ArrayAdapter<WifiP2pDevice> ps;
-	private final IntentFilter ifilter = new IntentFilter();
 	private final BroadcastReceiver br = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context ctx, Intent i) {
@@ -133,13 +138,15 @@ public class ConnManager {
 				NetworkInfo ni = (NetworkInfo) i.getParcelableExtra(WifiP2pManager.EXTRA_NETWORK_INFO);
 				if(ni.isConnected()) {
 					// got a connection! now we need a socket
-					//toast("Connection attempt will begin");
+					toast("Connection attempt will begin");
 					mgr.requestConnectionInfo(chan, new WifiP2pManager.ConnectionInfoListener() {
 						@Override
 						public void onConnectionInfoAvailable(final WifiP2pInfo ci) {
 							// so many callbacks...
 							toast("Connection established");
 							InetAddress growner = ci.groupOwnerAddress;
+							//Log.e("Sou o Proprietario",String.valueOf(ci.isGroupOwner));
+							//Log.e("Grupo Formado", String.valueOf(ci.groupFormed));
 							if(ci.groupFormed && ci.isGroupOwner) {
 								// I am a server
 								toast("I am a server");
@@ -150,9 +157,10 @@ public class ConnManager {
 										try {
 											// 2014 is the port, named after ACH2014
 											ServerSocket ss = new ServerSocket(2014);
-											toast("ServerSocket is ready");
+											//Asnctask anula contexto. Toast quebra o app.
+											//toast("ServerSocket is ready");
 											Socket s = ss.accept();
-											toast("Socket established");
+											//toast("Socket established");
 											// shouldn't call the callback here, do it in main thread
 											pl.setVisibility(View.INVISIBLE);
 											return new SocketPair(ss, s);
@@ -172,20 +180,23 @@ public class ConnManager {
 										}
 									}
 								}.execute();
-							} else if(ci.groupFormed) {
+							} else if(ci.groupFormed && !ci.isGroupOwner) {
 								toast("I am a client");
 								ss = null;
 								try {
 									// just connect and call the callback in a single step
+									// Erro: onConnectionInfoAvailable - NetworkOnMainThread
 									sockcb.onSocketReady(new Socket(growner, 2014));
 								} catch(IOException e) {
 									sockcb.onSocketFail(e);
-								}
+								} /*catch(NetworkOnMainThreadException e){
+									e.printStackTrace();
+								}*/
 							}
 						}
 					});
 				} else {
-					toast("Dead");
+					toast("Disconected");
 					// disconnected
 					if(ss != null) {
 						try {
@@ -211,6 +222,10 @@ public class ConnManager {
 	/* me hates java >:C */
 	// simple container class for an error or a socket
 	private class SocketPair {
+		public boolean isError;
+		public IOException e;
+		public ServerSocket ss;
+		public Socket s;
 		SocketPair(IOException e_) {
 			isError = true;
 			e = e_;
@@ -220,10 +235,6 @@ public class ConnManager {
 			ss = a;
 			s = b;
 		}
-		public boolean isError;
-		public IOException e;
-		public ServerSocket ss;
-		public Socket s;
 	}
 }
 

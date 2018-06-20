@@ -27,6 +27,8 @@ import android.widget.FrameLayout;
 
 import br.com.projetouspeyesvr.eyesvr.ConnManager;
 
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.Socket;
 import java.io.IOException;
 
@@ -42,6 +44,10 @@ public class MainActivity extends AppCompatActivity {
     private ShowCamera showCamera;
     private FrameLayout preview;
     private Socket connection;
+
+    OutputStream cameraPassar;
+    InputStream cameraCorrigida;
+    byte[] buffer = new byte[1024];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,13 +80,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             protected void onSocketReady(Socket s) {
                 // connection is ok, s is our channel
-                camera = getCameraInstance();
-                criarPreview();
-                button_camera.setVisibility(View.GONE);
                 AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
                 alertDialog.setTitle("Connection");
                 alertDialog.setMessage("We now connected are.");
                 alertDialog.show();
+                camera = getCameraInstance();
+                criarPreview();
             }
             @Override
             protected void onSocketFail(IOException e) {
@@ -204,6 +209,25 @@ public class MainActivity extends AppCompatActivity {
             showCamera = new ShowCamera(this, camera);
             preview = (FrameLayout) findViewById(R.id.camera_preview);
             preview.addView(showCamera);
+
+            /*
+
+            try {
+                cameraPassar = socket.getOutputStream();
+                buffer = dados da ShowCamera(em bitmap);
+                os.write(buffer);
+                //os.flush();
+                //os.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            cameraCorrigida = e.getInputStream();
+            preview.addView(cameraCorrigida)
+            )
+            */
+
         }
     }
+
 }

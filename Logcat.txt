@@ -1,14 +1,36 @@
 Celular 1 - Logcat
-06-19 22:12:28.385 18907-18907/br.com.projetouspeyesvr.eyesvr W/InputEventReceiver: Attempted to finish an input event but the input event receiver has already been disposed.
-06-19 22:12:28.385 18907-18907/br.com.projetouspeyesvr.eyesvr W/ViewRootImpl: Dropping event due to root view being removed: MotionEvent { action=ACTION_MOVE, id[0]=0, x[0]=1074.0, y[0]=591.0, toolType[0]=TOOL_TYPE_FINGER, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=15154090, downTime=15154081, deviceId=4, source=0x1002 }
-06-19 22:12:28.385 18907-18907/br.com.projetouspeyesvr.eyesvr W/InputEventReceiver: Attempted to finish an input event but the input event receiver has already been disposed.
+06-20 09:44:23.497 24856-24856/br.com.projetouspeyesvr.eyesvr I/art: Late-enabling -Xcheck:jni
+06-20 09:44:23.497 24856-24856/br.com.projetouspeyesvr.eyesvr D/houdini: [24856] Initialize library(version: 5.0.7a_y.48167 RELEASE)... successfully.
+06-20 09:44:23.875 24856-24856/br.com.projetouspeyesvr.eyesvr I/InstantRun: starting instant run server: is main process
+06-20 09:44:23.879 24856-24856/br.com.projetouspeyesvr.eyesvr V/Monotype: SetAppTypeFace- try to flip, app = br.com.projetouspeyesvr.eyesvr
+06-20 09:44:23.882 24856-24856/br.com.projetouspeyesvr.eyesvr V/Monotype:     Typeface getFontPathFlipFont - systemFont = default#default
+06-20 09:44:24.049 24856-24856/br.com.projetouspeyesvr.eyesvr W/art: Before Android 4.1, method android.graphics.PorterDuffColorFilter android.support.graphics.drawable.VectorDrawableCompat.updateTintFilter(android.graphics.PorterDuffColorFilter, android.content.res.ColorStateList, android.graphics.PorterDuff$Mode) would have incorrectly overridden the package-private method in android.graphics.drawable.Drawable
+06-20 09:44:24.075 24856-24856/br.com.projetouspeyesvr.eyesvr V/Monotype: SetAppTypeFace- try to flip, app = br.com.projetouspeyesvr.eyesvr
+        Typeface getFontPathFlipFont - systemFont = default#default
+06-20 09:44:24.299 24856-24950/br.com.projetouspeyesvr.eyesvr D/OpenGLRenderer: Render dirty regions requested: true
+06-20 09:44:24.305 24856-24856/br.com.projetouspeyesvr.eyesvr D/Atlas: Validating map...
+06-20 09:44:24.365 24856-24950/br.com.projetouspeyesvr.eyesvr I/OpenGLRenderer: Initialized EGL, version 1.4
+06-20 09:44:24.365 24856-24950/br.com.projetouspeyesvr.eyesvr W/OpenGLRenderer: Failed to choose config with EGL_SWAP_BEHAVIOR_PRESERVED, retrying without...
+06-20 09:44:24.376 24856-24950/br.com.projetouspeyesvr.eyesvr D/OpenGLRenderer: Enabling debug mode 0
+06-20 09:44:24.625 24856-24856/br.com.projetouspeyesvr.eyesvr W/art: Before Android 4.1, method int android.support.v7.widget.ListViewCompat.lookForSelectablePosition(int, boolean) would have incorrectly overridden the package-private method in android.widget.ListView
+06-20 09:44:27.857 24856-24856/br.com.projetouspeyesvr.eyesvr W/InputEventReceiver: Attempted to finish an input event but the input event receiver has already been disposed.
+06-20 09:44:28.412 24856-24856/br.com.projetouspeyesvr.eyesvr W/InputEventReceiver: Attempted to finish an input event but the input event receiver has already been disposed.
+06-20 09:44:28.524 24856-24856/br.com.projetouspeyesvr.eyesvr W/InputEventReceiver: Attempted to finish an input event but the input event receiver has already been disposed.
+06-20 09:44:47.081 24856-24856/br.com.projetouspeyesvr.eyesvr W/InputEventReceiver: Attempted to finish an input event but the input event receiver has already been disposed.
 
 Celular 2 - Logcat
-06-19 22:06:31.857 27743-27743/br.com.projetouspeyesvr.eyesvr I/LoadedApk: Performing receive of Intent { act=android.net.wifi.p2p.CONNECTION_STATE_CHANGE flg=0x24000010 (has extras) }, receiver=br.com.projetouspeyesvr.eyesvr.ConnManager$3@23c1e76, duration=87
-06-19 22:07:23.630 27743-27743/br.com.projetouspeyesvr.eyesvr W/ViewRootImpl[Connection attempt failed]: Dropping event due to root view being removed: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=1310.1426, y[0]=494.19427, toolType[0]=TOOL_TYPE_FINGER, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=4657880, downTime=4657869, deviceId=5, source=0x1002 }
-06-19 22:07:30.296 27743-27743/br.com.projetouspeyesvr.eyesvr W/ViewRootImpl[Connection attempt failed]: Dropping event due to root view being removed: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=1445.0723, y[0]=532.1591, toolType[0]=TOOL_TYPE_FINGER, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=4664550, downTime=4664539, deviceId=5, source=0x1002 }
-06-19 22:10:13.297 27743-27743/br.com.projetouspeyesvr.eyesvr I/LoadedApk: Performing receive of Intent { act=android.net.wifi.p2p.CONNECTION_STATE_CHANGE flg=0x24000010 (has extras) }, receiver=br.com.projetouspeyesvr.eyesvr.ConnManager$3@23c1e76, duration=50
-06-19 22:16:48.572 27743-27743/br.com.projetouspeyesvr.eyesvr I/LoadedApk: Performing receive of Intent { act=android.net.wifi.p2p.CONNECTION_STATE_CHANGE flg=0x24000010 (has extras) }, receiver=br.com.projetouspeyesvr.eyesvr.ConnManager$3@cef7c94, duration=63
-06-19 22:16:50.765 27743-27743/br.com.projetouspeyesvr.eyesvr W/ViewRootImpl[Disconected]: Dropping event due to root view being removed: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=1293.1515, y[0]=521.1693, toolType[0]=TOOL_TYPE_FINGER, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=5225031, downTime=5225021, deviceId=5, source=0x1002 }
-06-19 22:16:56.248 27743-27743/br.com.projetouspeyesvr.eyesvr I/LoadedApk: Performing receive of Intent { act=android.net.wifi.p2p.CONNECTION_STATE_CHANGE flg=0x24000010 (has extras) }, receiver=br.com.projetouspeyesvr.eyesvr.ConnManager$3@c242e51, duration=56
-06-19 22:18:37.782 27743-27743/br.com.projetouspeyesvr.eyesvr W/InputEventReceiver: Attempted to finish an input event but the input event receiver has already been disposed.
+06-20 09:43:44.193 13041-13041/br.com.projetouspeyesvr.eyesvr W/ViewRootImpl[Disconected]: Dropping event due to root view being removed: MotionEvent { action=ACTION_UP, actionButton=0, id[0]=0, x[0]=1269.164, y[0]=512.1776, toolType[0]=TOOL_TYPE_FINGER, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=231290, downTime=231278, deviceId=5, source=0x1002 }
+06-20 09:44:36.166 13041-13041/br.com.projetouspeyesvr.eyesvr V/BoostFramework: BoostFramework() : mPerf = com.qualcomm.qti.Performance@4d63854
+06-20 09:44:36.299 13041-13041/br.com.projetouspeyesvr.eyesvr V/BoostFramework: BoostFramework() : mPerf = com.qualcomm.qti.Performance@99075b5
+    BoostFramework() : mPerf = com.qualcomm.qti.Performance@55d744a
+06-20 09:44:36.306 13041-13041/br.com.projetouspeyesvr.eyesvr V/BoostFramework: BoostFramework() : mPerf = com.qualcomm.qti.Performance@9f94cd8
+    BoostFramework() : mPerf = com.qualcomm.qti.Performance@b9fb831
+06-20 09:44:52.003 13041-13041/br.com.projetouspeyesvr.eyesvr W/InputEventReceiver: Attempted to finish an input event but the input event receiver has already been disposed.
+06-20 09:45:58.078 13041-13041/br.com.projetouspeyesvr.eyesvr V/Monotype: SetAppTypeFace- try to flip, app = br.com.projetouspeyesvr.eyesvr
+        Typeface getFontPathFlipFont - systemFont = default#default
+06-20 09:45:58.090 13041-13041/br.com.projetouspeyesvr.eyesvr V/BoostFramework: BoostFramework() : mPerf = com.qualcomm.qti.Performance@6b95987
+06-20 09:45:58.100 13041-13041/br.com.projetouspeyesvr.eyesvr V/BoostFramework: BoostFramework() : mPerf = com.qualcomm.qti.Performance@b9c70b4
+06-20 09:45:58.152 13041-13041/br.com.projetouspeyesvr.eyesvr V/BoostFramework: BoostFramework() : mPerf = com.qualcomm.qti.Performance@dd92311
+06-20 09:45:58.153 13041-13041/br.com.projetouspeyesvr.eyesvr V/BoostFramework: BoostFramework() : mPerf = com.qualcomm.qti.Performance@e494c76
+06-20 09:45:58.160 13041-13041/br.com.projetouspeyesvr.eyesvr V/BoostFramework: BoostFramework() : mPerf = com.qualcomm.qti.Performance@6976ee4
+06-20 09:45:58.161 13041-13041/br.com.projetouspeyesvr.eyesvr V/BoostFramework: BoostFramework() : mPerf = com.qualcomm.qti.Performance@a9bdf4d

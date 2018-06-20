@@ -5,6 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/ProjetoEyesVR.iml" filepath="$PROJECT_DIR$/ProjetoEyesVR.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/libstreaming/libstreaming.iml" filepath="$PROJECT_DIR$/libstreaming/libstreaming.iml" />
+      <module fileurl="file://$PROJECT_DIR$/libstreaming/libstreaming.iml" filepath="$PROJECT_DIR$/libstreaming/libstreaming.iml" />
     </modules>
   </component>
 </project>

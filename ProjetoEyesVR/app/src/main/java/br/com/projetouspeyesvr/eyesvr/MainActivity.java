@@ -10,10 +10,14 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.hardware.Camera;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.Settings;
 
 import android.support.v4.app.ActivityCompat;
@@ -22,16 +26,24 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 
 import br.com.projetouspeyesvr.eyesvr.ConnManager;
 
+import java.io.DataOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.Inet4Address;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
 import java.net.Socket;
 import java.io.IOException;
+import java.net.SocketException;
+import java.util.Enumeration;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -42,14 +54,19 @@ public class MainActivity extends AppCompatActivity {
     private ConnManager cm;
     private Button button_camera;
     private Camera camera;
-    private ShowCamera showCamera;
+    public ShowCamera showCamera;
     private FrameLayout preview;
     private Socket connection;
+    private ImageView mCameraView;
+    public Bitmap mLastFrame;
 
-    OutputStream cameraPassar;
-    InputStream cameraCorrigida;
+    private Handler handler = new Handler();
+    private String myIP;
+    private int myPort;
+    //OutputStream os;
+    InputStream is;
     Drawable frame;
-    byte[] buffer = new byte[1024];
+    //byte[] buffer = new byte[1024];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,8 +80,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if(connection != null){
+                    button_camera.setVisibility(View.GONE);
                     camera = getCameraInstance();
+                    myIP = getLocalIpAddress();
                     criarPreview();
+                    mandarImagem();
                 }
             }
         });
@@ -109,6 +129,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void mandarImagem() {
+        Thread enviarThread = new Thread(new EnviarImagem(this,connection,handler));
+        enviarThread.start();
+    }
+
     public static Boolean getFromPref(Context context, String key) {
         SharedPreferences myPrefs = context.getSharedPreferences(CAMERA_PREF,
                 Context.MODE_PRIVATE);
@@ -214,6 +240,21 @@ public class MainActivity extends AppCompatActivity {
             camera.release();
             camera = null;
         }
+    }
+
+    private String getLocalIpAddress() {
+        try {
+            for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements();) {
+                NetworkInterface intf = en.nextElement();
+                for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr.hasMoreElements();) {
+                    InetAddress inetAddress = enumIpAddr.nextElement();
+                    if (!inetAddress.isLoopbackAddress()&& inetAddress instanceof Inet4Address) { return inetAddress.getHostAddress().toString(); }
+                }
+            }
+        } catch (SocketException ex) {
+            Log.e("ServerActivity", ex.toString());
+        }
+        return null;
     }
 
     private void criarPreview(){

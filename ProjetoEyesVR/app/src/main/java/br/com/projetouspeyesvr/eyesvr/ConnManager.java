@@ -144,15 +144,15 @@ public class ConnManager {
 						public void onConnectionInfoAvailable(final WifiP2pInfo ci) {
 							// so many callbacks...
 							toast("Connection established");
-							InetAddress growner = ci.groupOwnerAddress;
-							//Log.e("Sou o Proprietario",String.valueOf(ci.isGroupOwner));
-							//Log.e("Grupo Formado", String.valueOf(ci.groupFormed));
+							final InetAddress growner = ci.groupOwnerAddress;
+							Log.e("Sou o Proprietario",String.valueOf(ci.isGroupOwner));
+							Log.e("Grupo Formado", String.valueOf(ci.groupFormed));
 							if(ci.groupFormed && ci.isGroupOwner) {
 								// I am a server
 								toast("I am a server");
-								new AsyncTask<Void, Void, SocketPair>() {
+								new AsyncTask<Void, Void, Void>() {
 									@Override
-									protected SocketPair doInBackground(Void... useless__) {
+									protected Void doInBackground(Void... useless__) {
 										// should be done in the background because it blocks
 										try {
 											// 2014 is the port, named after ACH2014
@@ -161,37 +161,37 @@ public class ConnManager {
 											//toast("ServerSocket is ready");
 											Socket s = ss.accept();
 											//toast("Socket established");
-											// shouldn't call the callback here, do it in main thread
-											return new SocketPair(ss, s);
+											sockcb.onSocketReady(s);
 										} catch(IOException e) {
-											toast("Socket not established");
-											return new SocketPair(e);
+											//toast("Socket not established");
+											sockcb.onSocketFail(e);
 										}
+										return null;
 									}
 									@Override
-									protected void onPostExecute(SocketPair sp) {
+									protected void onPostExecute(Void useless__) {
 										// executed on main thread, can now call callback
 										pl.setVisibility(View.INVISIBLE);
-										if(sp.isError) {
-											sockcb.onSocketFail(sp.e);
-										} else {
-											ss = sp.ss;
-											sockcb.onSocketReady(sp.s);
-										}
 									}
 								}.execute();
 							} else if(ci.groupFormed && !ci.isGroupOwner) {
 								toast("I am a client");
-								ss = null;
-								try {
-									// just connect and call the callback in a single step
-									// Erro: onConnectionInfoAvailable - NetworkOnMainThread
-									sockcb.onSocketReady(new Socket(growner, 2014));
-								} catch(IOException e) {
-									sockcb.onSocketFail(e);
-								} /*catch(NetworkOnMainThreadException e){
-									e.printStackTrace();
-								}*/
+								new AsyncTask<Void, Void, Void>() {
+									@Override
+									protected Void doInBackground(Void... useless__) {
+										try {
+											// just connect and call the callback in a single step
+											sockcb.onSocketReady(new Socket(growner, 2014));
+										} catch(IOException e) {
+											sockcb.onSocketFail(e);
+										}
+										return null;
+									}
+									@Override
+									protected void onPostExecute(Void useless__) {
+										pl.setVisibility(View.INVISIBLE);
+									}
+								}.execute();
 							}
 						}
 					});
@@ -218,23 +218,6 @@ public class ConnManager {
 	public static abstract class SocketListener {
 		protected abstract void onSocketReady(Socket s);
 		protected abstract void onSocketFail(IOException e);
-	}
-	/* me hates java >:C */
-	// simple container class for an error or a socket
-	private class SocketPair {
-		public boolean isError;
-		public IOException e;
-		public ServerSocket ss;
-		public Socket s;
-		SocketPair(IOException e_) {
-			isError = true;
-			e = e_;
-		}
-		SocketPair(ServerSocket a, Socket b) {
-			isError = false;
-			ss = a;
-			s = b;
-		}
 	}
 }
 

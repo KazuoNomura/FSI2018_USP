@@ -80,12 +80,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             protected void onSocketReady(Socket s) {
                 // connection is ok, s is our channel
-                AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
+                /*AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
                 alertDialog.setTitle("Connection");
                 alertDialog.setMessage("We now connected are.");
                 alertDialog.show();
                 camera = getCameraInstance();
                 criarPreview();
+                */
             }
             @Override
             protected void onSocketFail(IOException e) {

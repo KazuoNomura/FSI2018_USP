@@ -9,6 +9,15 @@
     android:orientation="vertical"
     >
 
+    <Button
+        android:id="@+id/buttonCamera"
+        android:layout_width="157dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="11dp"
+        android:text="Start Camera" />
+
     <FrameLayout
         android:id="@+id/camera_preview"
         android:layout_width="match_parent"

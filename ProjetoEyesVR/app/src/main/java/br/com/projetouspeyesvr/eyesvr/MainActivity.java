@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 
+import android.graphics.drawable.Drawable;
 import android.hardware.Camera;
 import android.net.Uri;
 import android.os.Bundle;
@@ -47,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
 
     OutputStream cameraPassar;
     InputStream cameraCorrigida;
+    Drawable frame;
     byte[] buffer = new byte[1024];
 
     @Override
@@ -55,6 +57,17 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         releaseCameraAndPreview();
+
+        button_camera = (Button) findViewById(R.id.buttonCamera);
+        button_camera.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(connection != null){
+                    camera = getCameraInstance();
+                    criarPreview();
+                }
+            }
+        });
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             if (getFromPref(this, ALLOW_KEY)) {
@@ -80,13 +93,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             protected void onSocketReady(Socket s) {
                 // connection is ok, s is our channel
+                connection = s;
                 /*AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
                 alertDialog.setTitle("Connection");
                 alertDialog.setMessage("We now connected are.");
-                alertDialog.show();
-                camera = getCameraInstance();
-                criarPreview();
-                */
+                alertDialog.show();*/
             }
             @Override
             protected void onSocketFail(IOException e) {
@@ -211,10 +222,8 @@ public class MainActivity extends AppCompatActivity {
             preview = (FrameLayout) findViewById(R.id.camera_preview);
             preview.addView(showCamera);
 
-            /*
-
-            try {
-                cameraPassar = socket.getOutputStream();
+            /*try {
+                cameraPassar = connection.getOutputStream();
                 buffer = dados da ShowCamera(em bitmap);
                 os.write(buffer);
                 //os.flush();
@@ -222,13 +231,14 @@ public class MainActivity extends AppCompatActivity {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+            try{
+                cameraCorrigida = connection.getInputStream();
+                frame = Drawable.createFromStream(cameraCorrigida, "frame.jpg")
+                preview.setDrawable(frame);
 
-            cameraCorrigida = e.getInputStream();
-            preview.addView(cameraCorrigida)
-            )
-            */
-
+            } catch (IOException e) {
+                e.printStackTrace();
+            }*/
         }
     }
-
 }

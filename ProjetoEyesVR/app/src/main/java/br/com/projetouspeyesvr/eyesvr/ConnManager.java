@@ -162,7 +162,6 @@ public class ConnManager {
 											Socket s = ss.accept();
 											//toast("Socket established");
 											// shouldn't call the callback here, do it in main thread
-											pl.setVisibility(View.INVISIBLE);
 											return new SocketPair(ss, s);
 										} catch(IOException e) {
 											toast("Socket not established");
@@ -172,6 +171,7 @@ public class ConnManager {
 									@Override
 									protected void onPostExecute(SocketPair sp) {
 										// executed on main thread, can now call callback
+										pl.setVisibility(View.INVISIBLE);
 										if(sp.isError) {
 											sockcb.onSocketFail(sp.e);
 										} else {

@@ -255,6 +255,30 @@ public class MainActivity extends AppCompatActivity {
             }catch(IOException e){
                 e.printStackTrace();
             }
+            Thread putImage = (new Thread(new Runnable(){
+                @Override
+                public void run() {
+                    try {
+                        receivehandler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (mLastFrame!=null){
+
+                                    Bitmap mutableBitmap = mLastFrame.copy(Bitmap.Config.RGB_565, true);
+                                    Canvas canvas = new Canvas(mutableBitmap);
+                                    mCameraView.setImageBitmap(mutableBitmap);
+                                }
+                            }
+                        }); //this function can change value of mInterval.
+                    } finally {
+                        // 100% guarantee that this always happens, even if
+                        // your update method throws an exception
+                        receivehandler.postDelayed(mStatusChecker, 1000/15);
+                    }
+                }
+            }));
+            putImage.start();
+            //Thread cirno = new Thread(mStatusChecker());
 
             //preview = (FrameLayout) findViewById(R.id.camera_preview);
             //preview.addView(showCamera);
@@ -291,7 +315,7 @@ public class MainActivity extends AppCompatActivity {
         }
         return null;
     }
-    //talvez de erro aqui
+
     private Runnable mStatusChecker = new Runnable() {
         @Override
         public void run() {

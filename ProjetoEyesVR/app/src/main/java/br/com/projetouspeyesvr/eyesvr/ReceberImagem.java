@@ -11,14 +11,13 @@ import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.Socket;
+import java.sql.Connection;
 
 public class ReceberImagem implements Runnable {
     private Socket connection;
     private Handler mHandler;
     private Boolean mRunFlag = true;
     final private String TAG = "MyClientThread";
-    InputStream inStream;
-    DataInputStream is;
     private BitmapFactory.Options bitmap_options = new BitmapFactory.Options();
 
     public ReceberImagem(Socket s, Handler handler)throws IOException {
@@ -31,12 +30,13 @@ public class ReceberImagem implements Runnable {
     @Override
     public void run(){
         try {
+            InputStream inStream = null;
             try {
                 inStream = connection.getInputStream();
-                is = new DataInputStream(inStream);
             } catch (Exception e) {
                 e.printStackTrace();
             }
+            DataInputStream is = new DataInputStream(inStream);
             while (mRunFlag) {
                 try {
                     int token = is.readInt();
@@ -45,6 +45,7 @@ public class ReceberImagem implements Runnable {
                             int imgLength = is.readInt();
                             System.out.println("getLength:" + imgLength);
                             System.out.println("back-token" + is.readUTF());
+                            Log.e("KazuoViado",String.valueOf(imgLength));
                             byte[] buffer = new byte[imgLength];
                             int len = 0;
                             while (len < imgLength) {

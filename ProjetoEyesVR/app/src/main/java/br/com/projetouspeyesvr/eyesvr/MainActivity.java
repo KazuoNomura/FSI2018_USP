@@ -49,7 +49,6 @@ public class MainActivity extends AppCompatActivity {
     private Socket connection;
     private ImageView mCameraView;
     public Bitmap mLastFrame;
-    public ReceberImagem receber;
 
     private Handler sendhandler = new Handler();
     private final Handler receivehandler = new myHandler(this);
@@ -76,8 +75,6 @@ public class MainActivity extends AppCompatActivity {
                     camera = getCameraInstance();
                     myIP = getLocalIpAddress();
                     criarPreview();
-                    mandarImagem();
-                    imagemArrumada();
                 }
             }
         });
@@ -121,11 +118,6 @@ public class MainActivity extends AppCompatActivity {
                 a.show();
             }
         });
-    }
-
-    private void mandarImagem() {
-        Thread enviarThread = new Thread(new EnviarImagem(this,connection,sendhandler));
-        enviarThread.start();
     }
 
     public static Boolean getFromPref(Context context, String key) {
@@ -253,6 +245,17 @@ public class MainActivity extends AppCompatActivity {
     private void criarPreview(){
         if(camera != null) {
             showCamera = new ShowCamera(this, camera);
+            mCameraView = (ImageView) findViewById(R.id.camera_preview);
+            mCameraView.setVisibility(View.VISIBLE);
+            Thread enviarThread = new Thread(new EnviarImagem(this,connection,sendhandler));
+            enviarThread.start();
+            try {
+                Thread receberThread = new Thread(new ReceberImagem(connection, receivehandler));
+                receberThread.start();
+            }catch(IOException e){
+                e.printStackTrace();
+            }
+
             //preview = (FrameLayout) findViewById(R.id.camera_preview);
             //preview.addView(showCamera);
 
@@ -273,17 +276,6 @@ public class MainActivity extends AppCompatActivity {
             } catch (IOException e) {
                 e.printStackTrace();
             }*/
-        }
-    }
-
-    private void imagemArrumada(){
-        mCameraView = (ImageView) findViewById(R.id.camera_preview);
-        mCameraView.setVisibility(View.VISIBLE);
-        try {
-            receber = new ReceberImagem(connection, receivehandler);
-            new Thread(receber).start();
-        }catch (Exception e) {
-            e.printStackTrace();
         }
     }
 

@@ -5,6 +5,7 @@ import android.graphics.BitmapFactory;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.view.View;
 
 import java.io.DataInputStream;
 import java.io.IOException;
@@ -18,8 +19,8 @@ public class ReceberImagem implements Runnable {
     final private String TAG = "MyClientThread";
     InputStream inStream;
     DataInputStream is;
-
     private BitmapFactory.Options bitmap_options = new BitmapFactory.Options();
+
     public ReceberImagem(Socket s, Handler handler)throws IOException {
         connection = s;
         mHandler = handler;

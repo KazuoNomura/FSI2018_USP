@@ -1,20 +1,20 @@
 package br.com.projetouspeyesvr.eyesvr;
 import android.app.Activity;
-import android.app.Application;
+
 import android.content.*;
 import android.net.NetworkInfo;
 import android.net.wifi.*;
 import android.net.wifi.p2p.*;
 import android.os.AsyncTask;
 import android.os.Looper;
-import android.os.NetworkOnMainThreadException;
+
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.app.AlertDialog;
-import android.widget.Toast;
+
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -22,7 +22,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
+
 public class ConnManager {
 	private final ListView pl;
 	private SocketListener sockcb;

@@ -23,6 +23,8 @@ public class EnviarImagem implements Runnable {
         connection = s;
         mActivityInstance = (MainActivity)mContext;
     }
+
+    @Override
     public void run() {
         clientIP = connection.getInetAddress().toString().replace("/", "");
         clientPort = connection.getPort();

@@ -1,42 +1,32 @@
 package br.com.projetouspeyesvr.eyesvr;
 
 import android.Manifest;
-import android.app.Activity;
 import android.app.AlertDialog;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
+import android.graphics.Canvas;
+import android.graphics.Matrix;
+import android.graphics.Paint;
+import android.graphics.PointF;
 import android.hardware.Camera;
-import android.media.Image;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.provider.Settings;
 
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
-import br.com.projetouspeyesvr.eyesvr.ConnManager;
-
-import java.io.DataOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
@@ -59,14 +49,16 @@ public class MainActivity extends AppCompatActivity {
     private Socket connection;
     private ImageView mCameraView;
     public Bitmap mLastFrame;
+    public ReceberImagem receber;
 
-    private Handler handler = new Handler();
+    private Handler sendhandler = new Handler();
+    private final Handler receivehandler = new myHandler(this);
     private String myIP;
     private int myPort;
-    //OutputStream os;
-    InputStream is;
-    Drawable frame;
-    //byte[] buffer = new byte[1024];
+    private PointF tmp_point = new PointF();
+    private Paint tmp_paint = new Paint();
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,6 +77,7 @@ public class MainActivity extends AppCompatActivity {
                     myIP = getLocalIpAddress();
                     criarPreview();
                     mandarImagem();
+                    imagemArrumada();
                 }
             }
         });
@@ -131,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void mandarImagem() {
-        Thread enviarThread = new Thread(new EnviarImagem(this,connection,handler));
+        Thread enviarThread = new Thread(new EnviarImagem(this,connection,sendhandler));
         enviarThread.start();
     }
 
@@ -260,8 +253,8 @@ public class MainActivity extends AppCompatActivity {
     private void criarPreview(){
         if(camera != null) {
             showCamera = new ShowCamera(this, camera);
-            preview = (FrameLayout) findViewById(R.id.camera_preview);
-            preview.addView(showCamera);
+            //preview = (FrameLayout) findViewById(R.id.camera_preview);
+            //preview.addView(showCamera);
 
             /*try {
                 cameraPassar = connection.getOutputStream();
@@ -282,4 +275,51 @@ public class MainActivity extends AppCompatActivity {
             }*/
         }
     }
+
+    private void imagemArrumada(){
+        mCameraView = (ImageView) findViewById(R.id.camera_preview);
+        mCameraView.setVisibility(View.VISIBLE);
+        try {
+            receber = new ReceberImagem(connection, receivehandler);
+            new Thread(receber).start();
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static Bitmap rotateImage(Bitmap source, float angle) {
+        if (source != null){
+            Bitmap retVal;
+
+            Matrix matrix = new Matrix();
+            matrix.postRotate(angle);
+            retVal = Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(), matrix, true);
+            source.recycle();
+            return retVal;
+        }
+        return null;
+    }
+    //talvez de erro aqui
+    private Runnable mStatusChecker = new Runnable() {
+        @Override
+        public void run() {
+            try {
+                receivehandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (mLastFrame!=null){
+
+                            Bitmap mutableBitmap = mLastFrame.copy(Bitmap.Config.RGB_565, true);
+                            Canvas canvas = new Canvas(mutableBitmap);
+                            mCameraView.setImageBitmap(mutableBitmap);
+                        }
+                    }
+                }); //this function can change value of mInterval.
+            } finally {
+                // 100% guarantee that this always happens, even if
+                // your update method throws an exception
+                receivehandler.postDelayed(mStatusChecker, 1000/15);
+            }
+        }
+    };
 }

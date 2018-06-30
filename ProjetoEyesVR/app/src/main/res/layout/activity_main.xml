@@ -26,12 +26,23 @@
         android:background="@color/abc_input_method_navigation_guard"
         android:visibility="invisible" />
 
+    <FrameLayout
+        android:id="@+id/sua_camera"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="invisible">
+
+    </FrameLayout>
+
     <ListView
         android:id="@+id/peerlist"
         android:layout_width="397dp"
         android:layout_height="443dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="68dp" />
+        android:layout_marginTop="68dp" >
+
+
+    </ListView>
 
 </RelativeLayout>

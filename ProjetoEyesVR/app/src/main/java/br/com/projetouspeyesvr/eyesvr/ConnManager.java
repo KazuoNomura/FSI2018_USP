@@ -156,7 +156,7 @@ public class ConnManager {
 										// should be done in the background because it blocks
 										try {
 											// 2014 is the port, named after ACH2014
-											ServerSocket ss = new ServerSocket(2014);
+											ServerSocket ss = new ServerSocket(2018);
 											//Asnctask anula contexto. Toast quebra o app.
 											//toast("ServerSocket is ready");
 											Socket s = ss.accept();
@@ -181,7 +181,7 @@ public class ConnManager {
 									protected Void doInBackground(Void... useless__) {
 										try {
 											// just connect and call the callback in a single step
-											sockcb.onSocketReady(new Socket(growner, 2014));
+											sockcb.onSocketReady(new Socket(growner, 2018));
 										} catch(IOException e) {
 											sockcb.onSocketFail(e);
 										}
@@ -202,7 +202,6 @@ public class ConnManager {
 						try {
 							ss.close();
 						} catch(Exception e_) {
-							/* can't do much now */
 						}
 						ss = null;
 					}

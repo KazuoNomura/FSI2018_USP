@@ -112,10 +112,15 @@ public class MainActivity extends AppCompatActivity {
             @Override
             protected void onSocketFail(IOException e) {
                 // something went wrong
-                AlertDialog a = new AlertDialog.Builder(MainActivity.this).create();
+                /*try {
+                    connection.close();
+                } catch (IOException f){
+
+                }*/
+                /*AlertDialog a = new AlertDialog.Builder(MainActivity.this).create();
                 a.setTitle("Connection");
                 a.setMessage("We connected are not; something wrong went.\n" + e.getMessage());
-                a.show();
+                a.show();*/
             }
         });
     }
@@ -245,9 +250,13 @@ public class MainActivity extends AppCompatActivity {
     private void criarPreview(){
         if(camera != null) {
             showCamera = new ShowCamera(this, camera);
-            mCameraView = (ImageView) findViewById(R.id.camera_preview);
-            mCameraView.setVisibility(View.VISIBLE);
-            Thread enviarThread = new Thread(new EnviarImagem(this,connection,sendhandler));
+            //mCameraView = (ImageView) findViewById(R.id.camera_preview);
+            //mCameraView.setVisibility(View.VISIBLE);
+            preview = (FrameLayout) findViewById(R.id.sua_camera);
+            preview.setVisibility(View.VISIBLE);
+            //mCameraView.setVisibility(View.INVISIBLE);
+            preview.addView(showCamera);
+            /*final Thread enviarThread = new Thread(new EnviarImagem(this,connection,sendhandler));
             enviarThread.start();
             try {
                 Thread receberThread = new Thread(new ReceberImagem(connection, receivehandler));
@@ -255,7 +264,7 @@ public class MainActivity extends AppCompatActivity {
             }catch(IOException e){
                 e.printStackTrace();
             }
-            Thread putImage = (new Thread(new Runnable(){
+            final Thread putImage = (new Thread(new Runnable(){
                 @Override
                 public void run() {
                     try {
@@ -278,6 +287,18 @@ public class MainActivity extends AppCompatActivity {
                 }
             }));
             putImage.start();
+            final Thread Socketdown = (new Thread(new Runnable(){
+                @Override
+                public void run() {
+                    if(connection == null){
+                        preview = (FrameLayout) findViewById(R.id.sua_camera);
+                        preview.setVisibility(View.VISIBLE);
+                        mCameraView.setVisibility(View.INVISIBLE);
+                        preview.addView(showCamera);
+                    }
+                }
+            }));
+            Socketdown.start();*/
             //Thread cirno = new Thread(mStatusChecker());
 
             //preview = (FrameLayout) findViewById(R.id.camera_preview);
